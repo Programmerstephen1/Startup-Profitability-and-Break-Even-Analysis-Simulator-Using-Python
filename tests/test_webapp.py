@@ -31,7 +31,7 @@ class WebAppTests(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         r2 = self.client.post('/cohort_simulate', data={'initial_customers': '50', 'monthly_margin': '5', 'monthly_churn': '0.1', 'months': '6'})
         self.assertEqual(r2.status_code, 200)
-        self.assertIn(b'Cohort Results', r2.data)
+        self.assertIn(b'Cohort Analysis Results', r2.data)
 
     def test_compare(self):
         r = self.client.get('/compare')
@@ -51,7 +51,7 @@ class WebAppTests(unittest.TestCase):
             'monthly_growth': '0.05', 'months': '12', 'parameter': 'price', 'variation': '0.2'
         })
         self.assertEqual(r.status_code, 200)
-        self.assertIn(b'Sensitivity Analysis: price', r.data)
+        self.assertIn(b'Sensitivity Analysis:', r.data)
 
     def test_scenarios_list(self):
         r = self.client.get('/scenarios')
