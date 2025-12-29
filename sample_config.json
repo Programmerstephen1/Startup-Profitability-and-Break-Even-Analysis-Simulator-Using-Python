@@ -1,0 +1,10 @@
+{
+  "fixed_costs": 10000,
+  "price": 50,
+  "variable_cost": 20,
+  "initial_sales": 200,
+  "monthly_growth": 0.05,
+  "months": 12,
+  "export_csv": "from_config_projection.csv",
+  "export_plot": "from_config_projection.png"
+}
