@@ -17,6 +17,7 @@ BASE_TEMPLATE = '''
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startup Profitability Simulator</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <header>
@@ -149,6 +150,25 @@ def simulate():
         </tbody>
     </table>
     
+    <div class="card" style="margin-top:20px;">
+        <h3>Interactive Chart</h3>
+        <div id="projection-plot" style="width:100%;height:420px;"></div>
+        <script>
+            var plotData = {json.dumps({
+                'months': [r['month'] for r in results],
+                'cumulative': [r['cumulative_profit'] for r in results],
+                'units': [r['units'] for r in results],
+                'revenue': [r['revenue'] for r in results]
+            })};
+            var traceCum = {{"x": plotData.months, "y": plotData.cumulative, "name": "Cumulative Profit", "yaxis": "y1", "type": "scatter", "mode": "lines+markers", "line": {{"color": "green"}}}};
+            var traceUnits = {{"x": plotData.months, "y": plotData.units, "name": "Units", "yaxis": "y2", "type": "scatter", "mode": "lines", "line": {{"color": "blue", "dash": "dash"}}}};
+            var traceRevenue = {{"x": plotData.months, "y": plotData.revenue, "name": "Revenue", "yaxis": "y2", "type": "scatter", "mode": "lines", "line": {{"color": "orange", "dash": "dot"}}}};
+            var data = [traceCum, traceUnits, traceRevenue];
+            var layout = {{"title": "Projection Overview", "yaxis": {{"title": "Cumulative Profit", "side": "left"}}, "yaxis2": {{"title": "Units / Revenue", "overlaying": "y", "side": "right"}}}};
+            Plotly.newPlot('projection-plot', data, layout, {{responsive: true}});
+        </script>
+    </div>
+
     <div class="btn-group">
         <a href="/" class="back-link">← Dashboard</a>
         <form action="/sensitivity" method="get" style="display: inline;">
@@ -218,6 +238,19 @@ def cohort_simulate():
         </tbody>
     </table>
     
+    <div class="card" style="margin-top:20px;">
+        <h3>Interactive Cohort Chart</h3>
+        <div id="cohort-plot" style="width:100%;height:420px;"></div>
+        <script>
+            var cohortData = {json.dumps({'months':[r['month'] for r in results],'customers':[r['customers'] for r in results],'cumulative':[r['cumulative_margin'] for r in results]})};
+            var t1 = {{"x": cohortData.months, "y": cohortData.customers, "name": "Active Customers", "type": "scatter", "mode": "lines+markers", "line": {{"color": "blue"}}}};
+            var t2 = {{"x": cohortData.months, "y": cohortData.cumulative, "name": "Cumulative Margin", "yaxis": "y2", "type": "scatter", "mode": "lines", "line": {{"color": "green", "dash":"dash"}}}};
+            var data = [t1, t2];
+            var layout = {{"title":"Cohort Overview","yaxis":{{"title":"Active Customers"}},"yaxis2":{{"title":"Cumulative Margin","overlaying":"y","side":"right"}}}};
+            Plotly.newPlot('cohort-plot', data, layout, {{responsive: true}});
+        </script>
+    </div>
+
     <div class="btn-group">
         <a href="/cohort" class="back-link">← Back</a>
         <a href="/" class="back-link">Home</a>
@@ -298,6 +331,17 @@ def compare_simulate():
         </tbody>
     </table>
     
+    <div class="card" style="margin-top:20px;">
+        <h3>Comparison Chart</h3>
+        <div id="compare-plot" style="width:100%;height:420px;"></div>
+        <script>
+            var compareData = {json.dumps({'months':[r['month'] for r in a_results],'a_cum':[r['cumulative_profit'] for r in a_results],'b_cum':[r['cumulative_profit'] for r in b_results]})};
+            var ta = {{"x": compareData.months, "y": compareData.a_cum, "name": "Scenario A - Cumulative", "type": "scatter", "mode": "lines+markers", "line": {{"color":"#2563eb"}}}};
+            var tb = {{"x": compareData.months, "y": compareData.b_cum, "name": "Scenario B - Cumulative", "type": "scatter", "mode": "lines+markers", "line": {{"color":"#ef4444"}}}};
+            Plotly.newPlot('compare-plot',[ta,tb], {{"title":"Scenario Comparison (Cumulative Profit)"}}, {{responsive:true}});
+        </script>
+    </div>
+
     <div class="btn-group" style="margin-top: 30px;">
         <a href="/compare" class="back-link">← Back</a>
         <a href="/" class="back-link">Home</a>
@@ -394,6 +438,17 @@ def sensitivity_simulate():
         </tbody>
     </table>
     
+    <div class="card" style="margin-top:20px;">
+        <h3>Sensitivity Chart</h3>
+        <div id="sensitivity-plot" style="width:100%;height:420px;"></div>
+        <script>
+            var sens = {json.dumps({'changes':[r['change_percent'] for r in results],'final_profit':[r['final_cumulative_profit'] for r in results]})};
+            var trace = {{"x": sens.changes, "y": sens.final_profit, "type": "bar", "marker": {{"color": "#2563eb"}}}};
+            var layout = {{"title": "Sensitivity: Final Profit by Parameter Change", "xaxis": {{"title": "Change (%)"}}, "yaxis": {{"title": "Final Profit"}}}};
+            Plotly.newPlot('sensitivity-plot',[trace], layout, {{responsive:true}});
+        </script>
+    </div>
+
     <div class="alert alert-info">
         <strong>💡 Insight:</strong> Larger changes in break-even month and profit indicate higher sensitivity to this parameter.
     </div>
