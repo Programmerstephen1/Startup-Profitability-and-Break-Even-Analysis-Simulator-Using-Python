@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template_string
 import json
-from simulator import project_months, cohort_projection
+from simulator import project_months, cohort_projection, sensitivity_analysis
+from scenarios import save_scenario, load_scenario, list_scenarios, delete_scenario
 
 app = Flask(__name__)
 
@@ -17,7 +18,7 @@ FORM_HTML = '''
   Months: <input name="months" value="12"><br>
   <button type="submit">Run Projection</button>
 </form>
-<p><a href="/cohort">Cohort Projection</a> | <a href="/compare">Compare Scenarios</a></p>
+<p><a href="/cohort">Cohort Projection</a> | <a href="/compare">Compare Scenarios</a> | <a href="/sensitivity">Sensitivity Analysis</a> | <a href="/scenarios">Manage Scenarios</a></p>
 '''
 
 @app.route('/')
@@ -107,6 +108,151 @@ def compare_simulate():
     <table border='1'>{rows_b}</table>
     <p><a href="/">Back</a></p>
     """
+    return render_template_string(html)
+
+@app.route('/sensitivity')
+def sensitivity_form():
+    html = '''
+    <h2>Sensitivity Analysis</h2>
+    <p>Analyze how changes in key parameters affect break-even month and final profit.</p>
+    <form action="/sensitivity_simulate" method="post">
+      Fixed costs: <input name="fixed_costs" value="10000"><br>
+      Price: <input name="price" value="50"><br>
+      Variable cost: <input name="variable_cost" value="20"><br>
+      Initial sales: <input name="initial_sales" value="200"><br>
+      Monthly growth: <input name="monthly_growth" value="0.05"><br>
+      Months: <input name="months" value="12"><br>
+      Parameter to vary:
+      <select name="parameter">
+        <option value="price">Price</option>
+        <option value="variable_cost">Variable Cost</option>
+        <option value="initial_sales">Initial Sales</option>
+        <option value="monthly_growth">Monthly Growth</option>
+        <option value="fixed_costs">Fixed Costs</option>
+      </select><br>
+      Variation (e.g., 0.2 for ±20%): <input name="variation" value="0.2"><br>
+      <button type="submit">Run Analysis</button>
+    </form>
+    <p><a href="/">Back</a></p>
+    '''
+    return render_template_string(html)
+
+@app.route('/sensitivity_simulate', methods=['POST'])
+def sensitivity_simulate():
+    fixed_costs = float(request.form.get('fixed_costs', 10000))
+    price = float(request.form.get('price', 50))
+    variable_cost = float(request.form.get('variable_cost', 20))
+    initial_sales = int(request.form.get('initial_sales', 200))
+    monthly_growth = float(request.form.get('monthly_growth', 0.05))
+    months = int(request.form.get('months', 12))
+    parameter = request.form.get('parameter', 'price')
+    variation = float(request.form.get('variation', 0.2))
+
+    results = sensitivity_analysis(fixed_costs, price, variable_cost, initial_sales, monthly_growth, months, parameter, variation)
+    
+    rows = ''.join(f"<tr><td>{r['change_percent']:+d}%</td><td>{r['break_even_month']}</td><td>${r['final_cumulative_profit']:,.0f}</td></tr>" for r in results)
+    html = f"""
+    <h2>Sensitivity Analysis: {parameter}</h2>
+    <table border='1'>
+      <tr><th>Change</th><th>Break-Even Month</th><th>Final Profit</th></tr>
+      {rows}
+    </table>
+    <p><a href="/sensitivity">Run Another</a> | <a href="/">Back</a></p>
+    """
+    return render_template_string(html)
+
+@app.route('/scenarios')
+def scenarios_list():
+    scenario_names = list_scenarios()
+    scenario_items = ''.join(f"<li>{name} <a href='/scenarios/delete/{name}' onclick=\"return confirm('Delete?')\">Delete</a></li>" for name in scenario_names)
+    scenarios_html = f"<ul>{scenario_items}</ul>" if scenario_names else "<p>No scenarios saved yet.</p>"
+    
+    html = f'''
+    <h2>Manage Scenarios</h2>
+    <h3>Saved Scenarios</h3>
+    {scenarios_html}
+    <h3>Save Current Scenario</h3>
+    <form action="/scenarios/save" method="post">
+      Scenario name: <input name="scenario_name" value="" required><br>
+      Fixed costs: <input name="fixed_costs" value="10000"><br>
+      Price: <input name="price" value="50"><br>
+      Variable cost: <input name="variable_cost" value="20"><br>
+      Initial sales: <input name="initial_sales" value="200"><br>
+      Monthly growth: <input name="monthly_growth" value="0.05"><br>
+      Months: <input name="months" value="12"><br>
+      <button type="submit">Save</button>
+    </form>
+    <h3>Load Scenario</h3>
+    <form action="/scenarios/load" method="post">
+      <select name="scenario_name" required>
+        {' '.join(f'<option value="{name}">{name}</option>' for name in scenario_names)}
+      </select>
+      <button type="submit">Load</button>
+    </form>
+    <p><a href="/">Back</a></p>
+    '''
+    return render_template_string(html)
+
+@app.route('/scenarios/save', methods=['POST'])
+def save_scenario_post():
+    scenario_name = request.form.get('scenario_name', 'untitled')
+    params = {
+        'fixed_costs': float(request.form.get('fixed_costs', 10000)),
+        'price': float(request.form.get('price', 50)),
+        'variable_cost': float(request.form.get('variable_cost', 20)),
+        'initial_sales': int(request.form.get('initial_sales', 200)),
+        'monthly_growth': float(request.form.get('monthly_growth', 0.05)),
+        'months': int(request.form.get('months', 12)),
+    }
+    save_scenario(scenario_name, params)
+    html = f"""
+    <h2>Scenario Saved</h2>
+    <p>Scenario '{scenario_name}' saved successfully!</p>
+    <p><a href="/scenarios">Back to Scenarios</a> | <a href="/">Home</a></p>
+    """
+    return render_template_string(html)
+
+@app.route('/scenarios/load', methods=['POST'])
+def load_scenario_post():
+    scenario_name = request.form.get('scenario_name', '')
+    try:
+        params = load_scenario(scenario_name)
+        html = f"""
+        <h2>Scenario Loaded: {scenario_name}</h2>
+        <p>Parameters loaded. Use the form below to simulate:</p>
+        <form action="/simulate" method="post">
+          <input type="hidden" name="fixed_costs" value="{params.get('fixed_costs', 10000)}">
+          <input type="hidden" name="price" value="{params.get('price', 50)}">
+          <input type="hidden" name="variable_cost" value="{params.get('variable_cost', 20)}">
+          <input type="hidden" name="initial_sales" value="{params.get('initial_sales', 200)}">
+          <input type="hidden" name="monthly_growth" value="{params.get('monthly_growth', 0.05)}">
+          <input type="hidden" name="months" value="{params.get('months', 12)}">
+          <button type="submit">Run Simulation</button>
+        </form>
+        <p><a href="/scenarios">Back</a></p>
+        """
+    except FileNotFoundError:
+        html = f"""
+        <h2>Error</h2>
+        <p>Scenario '{scenario_name}' not found.</p>
+        <p><a href="/scenarios">Back</a></p>
+        """
+    return render_template_string(html)
+
+@app.route('/scenarios/delete/<scenario_name>')
+def delete_scenario_route(scenario_name):
+    if delete_scenario(scenario_name):
+        html = f"""
+        <h2>Deleted</h2>
+        <p>Scenario '{scenario_name}' deleted.</p>
+        <p><a href="/scenarios">Back</a></p>
+        """
+    else:
+        html = f"""
+        <h2>Error</h2>
+        <p>Scenario '{scenario_name}' not found.</p>
+        <p><a href="/scenarios">Back</a></p>
+        """
     return render_template_string(html)
 
 if __name__ == '__main__':

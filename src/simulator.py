@@ -93,3 +93,61 @@ def cohort_projection(initial_customers: int, monthly_margin_per_customer: float
     return results
 
 
+def sensitivity_analysis(fixed_costs: float, price: float, variable_cost: float, initial_sales: int,
+                        monthly_growth: float, months: int, parameter: str, variation_range: float = 0.2) -> List[Dict]:
+    """Analyze sensitivity: vary one parameter ±variation_range and return break-even month and final profit for each.
+
+    Parameters:
+    - parameter: one of 'price', 'variable_cost', 'initial_sales', 'monthly_growth', 'fixed_costs'
+    - variation_range: float like 0.2 for ±20% variation (5 data points: -20%, -10%, 0%, +10%, +20%)
+
+    Returns list of dicts: {change_percent, break_even_month, final_cumulative_profit}
+    """
+    changes = [-variation_range, -variation_range/2, 0, variation_range/2, variation_range]
+    results = []
+
+    for change in changes:
+        # Apply change to parameter
+        params = {
+            'fixed_costs': fixed_costs,
+            'price': price,
+            'variable_cost': variable_cost,
+            'initial_sales': initial_sales,
+            'monthly_growth': monthly_growth,
+            'months': months,
+        }
+
+        if parameter == 'price':
+            params['price'] = price * (1 + change)
+        elif parameter == 'variable_cost':
+            params['variable_cost'] = variable_cost * (1 + change)
+        elif parameter == 'initial_sales':
+            params['initial_sales'] = int(initial_sales * (1 + change))
+        elif parameter == 'monthly_growth':
+            params['monthly_growth'] = monthly_growth * (1 + change)
+        elif parameter == 'fixed_costs':
+            params['fixed_costs'] = fixed_costs * (1 + change)
+        else:
+            raise ValueError(f"Unknown parameter: {parameter}")
+
+        projection = project_months(
+            params['fixed_costs'],
+            params['price'],
+            params['variable_cost'],
+            params['initial_sales'],
+            params['monthly_growth'],
+            params['months'],
+        )
+
+        bem = break_even_month(projection)
+        final_profit = projection[-1]['cumulative_profit'] if projection else 0
+
+        results.append({
+            'change_percent': int(change * 100),
+            'break_even_month': bem,
+            'final_cumulative_profit': final_profit,
+        })
+
+    return results
+
+

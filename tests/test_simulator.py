@@ -10,7 +10,7 @@ if SRC not in sys.path:
 
 from simulator import break_even_units, project_months, break_even_month
 from simulator import calculate_ltv, cac_payback_months
-from simulator import cohort_projection
+from simulator import cohort_projection, sensitivity_analysis
 
 
 class SimulatorTests(unittest.TestCase):
@@ -43,6 +43,29 @@ class SimulatorTests(unittest.TestCase):
         self.assertAlmostEqual(results[0]['monthly_margin'], 500.0)
         # month 2 customers = 90 -> margin 450
         self.assertAlmostEqual(results[1]['monthly_margin'], 90 * 5.0)
+
+    def test_sensitivity_analysis_price(self):
+        results = sensitivity_analysis(fixed_costs=10000, price=50, variable_cost=20, initial_sales=200, 
+                                       monthly_growth=0.05, months=12, parameter='price', variation_range=0.2)
+        self.assertEqual(len(results), 5)
+        # Center point (0% change) should exist
+        center = [r for r in results if r['change_percent'] == 0][0]
+        self.assertIsNotNone(center)
+        # Results should have keys
+        for r in results:
+            self.assertIn('change_percent', r)
+            self.assertIn('break_even_month', r)
+            self.assertIn('final_cumulative_profit', r)
+
+    def test_sensitivity_analysis_variable_cost(self):
+        results = sensitivity_analysis(fixed_costs=10000, price=50, variable_cost=20, initial_sales=200, 
+                                       monthly_growth=0.05, months=12, parameter='variable_cost', variation_range=0.1)
+        self.assertEqual(len(results), 5)
+        # Higher variable cost should reduce profit
+        neg_10 = [r for r in results if r['change_percent'] == -10][0]
+        pos_10 = [r for r in results if r['change_percent'] == 10][0]
+        self.assertGreater(neg_10['final_cumulative_profit'], pos_10['final_cumulative_profit'])
+
 
 
 if __name__ == '__main__':

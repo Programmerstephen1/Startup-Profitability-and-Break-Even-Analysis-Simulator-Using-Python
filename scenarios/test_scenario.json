@@ -1,0 +1,8 @@
+{
+  "fixed_costs": 5000.0,
+  "price": 40.0,
+  "variable_cost": 15.0,
+  "initial_sales": 100,
+  "monthly_growth": 0.03,
+  "months": 10
+}

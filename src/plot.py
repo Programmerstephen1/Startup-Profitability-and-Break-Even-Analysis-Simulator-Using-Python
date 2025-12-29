@@ -88,5 +88,62 @@ def make_cohort_plot_bytes(cohort_results):
     return buf
 
 
+def make_cost_pie_chart_bytes(results, fixed_costs):
+    """Create a pie chart showing fixed costs vs total variable costs breakdown."""
+    try:
+        import matplotlib.pyplot as plt
+    except Exception:
+        raise
+    
+    total_variable = sum(r['variable_costs'] for r in results)
+    fig, ax = plt.subplots(figsize=(7, 5))
+    sizes = [fixed_costs, total_variable]
+    labels = [f'Fixed Costs\n${fixed_costs:,.0f}', f'Total Variable Costs\n${total_variable:,.0f}']
+    colors = ['#ff9999', '#66b3ff']
+    ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+    ax.set_title('Cost Breakdown')
+    fig.tight_layout()
+    buf = BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+    plt.close(fig)
+    return buf
+
+
+def make_waterfall_chart_bytes(results):
+    """Create a waterfall chart showing cumulative profit growth month-by-month."""
+    try:
+        import matplotlib.pyplot as plt
+        import numpy as np
+    except Exception:
+        raise
+    
+    months = [r['month'] for r in results]
+    profits = [r['profit'] for r in results]
+    
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    # Calculate cumulative for waterfall
+    cumulative = 0
+    x_pos = np.arange(len(months))
+    colors = ['green' if p >= 0 else 'red' for p in profits]
+    
+    ax.bar(x_pos, profits, color=colors, alpha=0.7, edgecolor='black')
+    ax.set_xlabel('Month')
+    ax.set_ylabel('Monthly Profit')
+    ax.set_title('Monthly Profit Waterfall')
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(months)
+    ax.axhline(y=0, color='black', linestyle='-', linewidth=0.5)
+    ax.grid(axis='y', alpha=0.3)
+    
+    fig.tight_layout()
+    buf = BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+    plt.close(fig)
+    return buf
+
+
 if __name__ == '__main__':
     main()
