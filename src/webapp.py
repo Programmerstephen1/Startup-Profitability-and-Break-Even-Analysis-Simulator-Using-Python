@@ -2,9 +2,11 @@ from flask import Flask, request, render_template_string, url_for
 import json
 from simulator import project_months, cohort_projection, sensitivity_analysis
 from scenarios import save_scenario, load_scenario, list_scenarios, delete_scenario
+from api import api
 import os
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
+app.register_blueprint(api)
 
 # Base HTML template with header and navigation
 BASE_TEMPLATE = '''
