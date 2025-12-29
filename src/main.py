@@ -57,6 +57,19 @@ def export_csv(path: str, results):
 
 def main():
     args = parse_args()
+    # Basic input validation
+    if args.fixed_costs < 0:
+        print("fixed-costs must be non-negative")
+        raise SystemExit(2)
+    if args.price < 0 or args.variable_cost < 0:
+        print("price and variable-cost must be non-negative")
+        raise SystemExit(2)
+    if args.initial_sales < 0 or args.months <= 0:
+        print("initial-sales must be non-negative and months must be > 0")
+        raise SystemExit(2)
+    if args.monthly_growth < -1:
+        print("monthly-growth must be >= -1")
+        raise SystemExit(2)
     results = project_months(args.fixed_costs, args.price, args.variable_cost, args.initial_sales,
                              args.monthly_growth, args.months)
     print_summary(args.fixed_costs, args.price, args.variable_cost, args.initial_sales, args.monthly_growth, args.months, results)

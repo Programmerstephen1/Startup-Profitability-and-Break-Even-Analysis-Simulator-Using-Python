@@ -71,3 +71,25 @@ def cac_payback_months(cac: float, monthly_margin_per_customer: float) -> int:
     from math import ceil
     return int(ceil(cac / monthly_margin_per_customer))
 
+
+def cohort_projection(initial_customers: int, monthly_margin_per_customer: float, monthly_churn_rate: float, months: int):
+    """Return monthly cohort projection for a single acquisition cohort.
+
+    Each month returns dict: month, customers, monthly_margin, cumulative_margin
+    """
+    results = []
+    customers = float(initial_customers)
+    cumulative = 0.0
+    for m in range(1, months + 1):
+        monthly_margin = customers * monthly_margin_per_customer
+        cumulative += monthly_margin
+        results.append({
+            "month": m,
+            "customers": int(customers),
+            "monthly_margin": monthly_margin,
+            "cumulative_margin": cumulative,
+        })
+        customers = customers * (1.0 - monthly_churn_rate)
+    return results
+
+

@@ -29,6 +29,10 @@ def main():
         print(f"Config not found: {cfg_path}")
         sys.exit(2)
     cfg = load_config(cfg_path)
+    # Basic validation
+    if cfg.get('fixed_costs', 0) < 0 or cfg.get('price', 0) < 0 or cfg.get('variable_cost', 0) < 0:
+        print('Config values must be non-negative')
+        sys.exit(2)
     results = project_months(cfg['fixed_costs'], cfg['price'], cfg['variable_cost'], cfg.get('initial_sales', 100), cfg.get('monthly_growth', 0.0), cfg.get('months', 12))
 
     out_csv = Path(cfg.get('export_csv', 'from_config_projection.csv'))

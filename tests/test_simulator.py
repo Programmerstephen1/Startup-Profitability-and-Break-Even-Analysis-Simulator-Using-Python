@@ -10,6 +10,7 @@ if SRC not in sys.path:
 
 from simulator import break_even_units, project_months, break_even_month
 from simulator import calculate_ltv, cac_payback_months
+from simulator import cohort_projection
 
 
 class SimulatorTests(unittest.TestCase):
@@ -34,6 +35,14 @@ class SimulatorTests(unittest.TestCase):
         self.assertAlmostEqual(ltv, 50.0)
         months = cac_payback_months(cac=200.0, monthly_margin_per_customer=10.0)
         self.assertEqual(months, 20)
+
+    def test_cohort_projection(self):
+        results = cohort_projection(initial_customers=100, monthly_margin_per_customer=5.0, monthly_churn_rate=0.1, months=6)
+        self.assertEqual(len(results), 6)
+        # month 1 margin = 100 * 5 = 500
+        self.assertAlmostEqual(results[0]['monthly_margin'], 500.0)
+        # month 2 customers = 90 -> margin 450
+        self.assertAlmostEqual(results[1]['monthly_margin'], 90 * 5.0)
 
 
 if __name__ == '__main__':
