@@ -1,0 +1,6 @@
+saas -> http://127.0.0.1:5000/?fixed_costs=10000&price=20&variable_cost=5&initial_sales=100&monthly_growth=0.06&months=24
+freemium -> http://127.0.0.1:5000/?fixed_costs=7000&price=10&variable_cost=2&initial_sales=500&monthly_growth=0.05&months=18
+ecommerce -> http://127.0.0.1:5000/?fixed_costs=8000&price=50&variable_cost=30&initial_sales=300&monthly_growth=0.04&months=12
+marketplace -> http://127.0.0.1:5000/?fixed_costs=12000&price=5&variable_cost=2&initial_sales=1000&monthly_growth=0.08&months=12
+consulting -> http://127.0.0.1:5000/?fixed_costs=3000&price=200&variable_cost=20&initial_sales=10&monthly_growth=0.03&months=12
+hardware -> http://127.0.0.1:5000/?fixed_costs=25000&price=300&variable_cost=150&initial_sales=50&monthly_growth=0.02&months=24

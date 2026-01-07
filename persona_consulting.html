@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profitability Simulator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Startup Profitability Simulator</h1>
+            <p>Analyze financial projections, break-even points, and business scenarios</p>
+            <nav>
+                        <a href="/home">Home</a>
+                        <a href="/">Simulator</a>
+                        <a href="/sensitivity">Sensitivity Analysis</a>
+                        <a href="/cohort">Cohort Projection</a>
+                        <a href="/compare">Compare Scenarios</a>
+                        <a href="/scenarios">Manage Scenarios</a>
+                    </nav>
+        </div>
+    </header>
+    <main class="container">
+        
+    <div class="grid-2">
+        <div class="card">
+            <h3>📈 Quick Projection</h3>
+            <p>Model your startup's profitability over time. Enter your business parameters and see when you'll break even.</p>
+            <form action="/simulate" method="post">
+                <div class="form-group">
+                    <label>Fixed Costs</label>
+                    <input type="number" name="fixed_costs" value="3000" step="100">
+                </div>
+                <div class="form-group">
+                    <label>Price per Unit</label>
+                    <input type="number" name="price" value="200" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Variable Cost per Unit</label>
+                    <input type="number" name="variable_cost" value="20" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Initial Sales (units)</label>
+                    <input type="number" name="initial_sales" value="10" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Monthly Growth Rate</label>
+                    <input type="number" name="monthly_growth" value="0.03" step="0.01" min="0" max="1">
+                </div>
+                <div class="form-group">
+                    <label>Number of Months</label>
+                    <input type="number" name="months" value="12" step="1" min="1">
+                </div>
+                <button type="submit">Run Projection</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>ℹ️ What This Does</h3>
+            <p><strong>Projection:</strong> Simulates monthly revenue, costs, and cumulative profit based on your inputs.</p>
+            <p><strong>Break-even:</strong> Identifies the month when cumulative profit becomes positive.</p>
+            <p><strong>Sensitivity:</strong> Analyzes how changes to key parameters affect outcomes.</p>
+            <p><strong>Scenarios:</strong> Save and compare different business models.</p>
+            <hr class="divider">
+            <p><strong>Tip:</strong> Use different scenarios to explore pricing strategies, cost structures, and growth rates.</p>
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <p>&copy; 2025 Startup Simulator. Built with Python, Flask, and ❤️</p>
+    </footer>
+</body>
+</html>

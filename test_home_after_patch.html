@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profitability Simulator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Startup Profitability Simulator</h1>
+            <p>Analyze financial projections, break-even points, and business scenarios</p>
+            <nav>
+                        <a href="/">Home</a>
+                        <a href="/simulator">Simulator</a>
+                        <a href="/sensitivity">Sensitivity Analysis</a>
+                        <a href="/cohort">Cohort Projection</a>
+                        <a href="/compare">Compare Scenarios</a>
+                        <a href="/scenarios">Manage Scenarios</a>
+                    </nav>
+        </div>
+    </header>
+    <main class="container">
+        
+        <section class="card hero">
+            <div class="flex" style="align-items: center; gap: 24px;">
+                <div style="flex: 1;">
+                    <h2 style="font-size: 36px; margin-block-end: 10px;">Startup Profitability Simulator — Plan with Confidence</h2>
+                    <p class="mt-2">Pick a persona, preview defaults, and jump straight into the simulator.</p>
+
+                    <div class="mt-3">
+                        <label>Persona</label>
+                        <select id="persona-select">
+                            <option value="saas" title="SaaS: recurring revenue">SaaS — subscription business</option>
+                            <option value="freemium" title="Freemium: many users, low conversion">Freemium — converting users</option>
+                            <option value="ecommerce" title="E‑commerce: per-unit margins">E‑commerce — product margins</option>
+                            <option value="marketplace" title="Marketplace: take-rate model">Marketplace — take rate model</option>
+                            <option value="consulting" title="Consulting: high-ticket services">Consulting — high margin services</option>
+                            <option value="hardware" title="Hardware: upfront manufacturing costs">Hardware — upfront costs</option>
+                        </select>
+                        <div id="persona-desc" class="mt-2 text-muted">Select a persona to see a short description and defaults.</div>
+
+                        <div id="persona-preview" class="card mt-3" style="padding:12px;">
+                            <h4 style="margin:0 0 8px 0; font-size:16px;">Preview Defaults</h4>
+                            <div id="persona-defaults" class="flex"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <button id="start-btn">Start Simulator</button>
+                        <button id="demo-btn" class="btn-secondary">Try Demo</button>
+                    </div>
+                </div>
+
+                <div style="flex: 1; text-align: center;">
+                    <img src="/static/hero-illustration.svg" alt="Startup illustration" style="max-inline-size: 320px; opacity: 0.95;">
+                </div>
+            </div>
+        </section>
+
+        <section class="grid-2 mt-4">
+            <div class="card">
+                 <h3>How it works</h3>
+                 <p>Choose a persona to load helpful defaults, then click Start to open the simulator pre-filled for that business model.</p>
+            </div>
+            <div class="card">
+                 <h3>Why try it</h3>
+                 <p>Quickly explore pricing, margins, and growth scenarios to find robust strategies before deep-diving into projections.</p>
+            </div>
+        </section>
+
+        <section class="card mt-4">
+            <h3>Features</h3>
+            <ul>
+                <li>Quick projections: revenue, costs, and cumulative profit over time.</li>
+                <li>Sensitivity analysis: understand which levers matter most.</li>
+                <li>Scenario saving: compare alternate business models side-by-side.</li>
+                <li>Cohort projection: model customer retention and lifetime value.</li>
+            </ul>
+        </section>
+
+        <section class="card mt-4">
+            <h3>Quick Start</h3>
+            <ol>
+                <li>Select a persona and review the preview defaults.</li>
+                <li>Click <strong>Start Simulator</strong> to open the simulator pre-filled.</li>
+                <li>Tweak parameters and run the projection to see break-even and cumulative profit.</li>
+                <li>Save scenarios to compare different strategies.</li>
+            </ol>
+        </section>
+
+        <section class="card mt-4">
+            <h3>FAQ</h3>
+            <p><strong>Q:</strong> Can I edit the defaults before running the simulator?<br><strong>A:</strong> Yes — the simulator form is pre-filled and fully editable.</p>
+            <p><strong>Q:</strong> Are results saved?<br><strong>A:</strong> Use the Scenarios page to save and load models.</p>
+        </section>
+
+        <section class="card mt-4">
+            <h3>How to Read The Graph</h3>
+            <p class="text-muted">Below is an illustrative graph showing typical projection lines. Use this legend to understand projection outputs in the simulator.</p>
+            <div style="display:flex; gap:20px; align-items:center;">
+                <img src="/static/graph-explain.svg" alt="Graph explanation" style="max-width:320px;">
+                <div>
+                    <ul class="text-small">
+                        <li><strong style="color:#2563eb">Revenue (blue):</strong> Monthly sales revenue.</li>
+                        <li><strong style="color:#10b981">Variable Costs (green):</strong> Costs that scale with units sold.</li>
+                        <li><strong style="color:#ef4444">Fixed Costs (red line):</strong> Recurring fixed operating costs.</li>
+                        <li><strong style="color:#374151">Cumulative Profit (dark):</strong> Running total profit; crossing zero is break-even.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <script src="/static/home.js"></script>
+        
+    </main>
+    <footer>
+        <p>&copy; 2025 Startup Simulator. Built with Python, Flask, and ❤️</p>
+    </footer>
+</body>
+</html>

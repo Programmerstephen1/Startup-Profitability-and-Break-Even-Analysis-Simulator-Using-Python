@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profitability Simulator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Startup Profitability Simulator</h1>
+            <p>Analyze financial projections, break-even points, and business scenarios</p>
+            <nav>
+                        <a href="/">Home</a>
+                        <a href="/simulator">Simulator</a>
+                        <a href="/sensitivity">Sensitivity Analysis</a>
+                        <a href="/cohort">Cohort Projection</a>
+                        <a href="/compare">Compare Scenarios</a>
+                        <a href="/scenarios">Manage Scenarios</a>
+                    </nav>
+        </div>
+    </header>
+    <main class="container">
+        
+    <a href="/simulator" class="back-link">← Back to Dashboard</a>
+    
+    <div class="card">
+        <h2>📊 Projection Results</h2>
+        <div class="grid-2">
+            <div>
+                <h4>Break-Even Month</h4>
+                <p style="font-size: 24px; color: var(--primary-color); font-weight: bold;">
+                    2
+                </p>
+            </div>
+            <div>
+                <h4>Final Cumulative Profit</h4>
+                <p style="font-size: 24px; color: var(--success-color); font-weight: bold;">
+                    $84,740
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Units Sold</th>
+                <th>Revenue</th>
+                <th>Variable Costs</th>
+                <th>Monthly Profit</th>
+                <th>Cumulative Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>200</td><td>$10,000</td><td>$4,000</td><td>$6,000</td><td>$-4,000</td></tr><tr><td>2</td><td>210</td><td>$10,500</td><td>$4,200</td><td>$6,300</td><td>$2,300</td></tr><tr><td>3</td><td>220</td><td>$11,000</td><td>$4,400</td><td>$6,600</td><td>$8,900</td></tr><tr><td>4</td><td>231</td><td>$11,550</td><td>$4,620</td><td>$6,930</td><td>$15,830</td></tr><tr><td>5</td><td>242</td><td>$12,100</td><td>$4,840</td><td>$7,260</td><td>$23,090</td></tr><tr><td>6</td><td>254</td><td>$12,700</td><td>$5,080</td><td>$7,620</td><td>$30,710</td></tr><tr><td>7</td><td>266</td><td>$13,300</td><td>$5,320</td><td>$7,980</td><td>$38,690</td></tr><tr><td>8</td><td>279</td><td>$13,950</td><td>$5,580</td><td>$8,370</td><td>$47,060</td></tr><tr><td>9</td><td>292</td><td>$14,600</td><td>$5,840</td><td>$8,760</td><td>$55,820</td></tr><tr><td>10</td><td>306</td><td>$15,300</td><td>$6,120</td><td>$9,180</td><td>$65,000</td></tr><tr><td>11</td><td>321</td><td>$16,050</td><td>$6,420</td><td>$9,630</td><td>$74,630</td></tr><tr><td>12</td><td>337</td><td>$16,850</td><td>$6,740</td><td>$10,110</td><td>$84,740</td></tr>
+        </tbody>
+    </table>
+    
+    <div class="btn-group">
+        <a href="/simulator" class="back-link">← Dashboard</a>
+        <form action="/sensitivity" method="get" style="display: inline;">
+            <button type="submit" class="btn-secondary">Run Sensitivity Analysis</button>
+        </form>
+    </div>
+    
+    </main>
+    <footer>
+        <p>&copy; 2025 Startup Simulator. Built with Python, Flask, and ❤️</p>
+    </footer>
+</body>
+</html>

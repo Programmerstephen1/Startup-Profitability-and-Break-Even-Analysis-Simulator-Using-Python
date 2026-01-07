@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profitability Simulator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Startup Profitability Simulator</h1>
+            <p>Analyze financial projections, break-even points, and business scenarios</p>
+            <nav>
+                        <a href="/home">Home</a>
+                        <a href="/">Simulator</a>
+                        <a href="/sensitivity">Sensitivity Analysis</a>
+                        <a href="/cohort">Cohort Projection</a>
+                        <a href="/compare">Compare Scenarios</a>
+                        <a href="/scenarios">Manage Scenarios</a>
+                    </nav>
+        </div>
+    </header>
+    <main class="container">
+        
+        <section class="card hero">
+            <div class="flex" style="align-items: center; gap: 24px;">
+                <div style="flex: 1;">
+                    <h2 style="font-size: 36px; margin-bottom: 10px;">Build a profitable startup — interactively</h2>
+                    <p class="mt-2">Pick a persona, preview defaults, and jump straight into the simulator.</p>
+
+                    <div class="mt-3">
+                        <label>Persona</label>
+                        <select id="persona-select">
+                            <option value="saas">SaaS — subscription business</option>
+                            <option value="freemium">Freemium — converting users</option>
+                            <option value="ecommerce">E‑commerce — product margins</option>
+                            <option value="marketplace">Marketplace — take rate model</option>
+                            <option value="consulting">Consulting — high margin services</option>
+                            <option value="hardware">Hardware — upfront costs</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-3">
+                        <button id="start-btn">Start Simulator</button>
+                        <button id="demo-btn" class="btn-secondary">Try Demo</button>
+                    </div>
+                </div>
+
+                <div style="flex: 1; text-align: center;">
+                    <img src="/static/hero-illustration.svg" alt="Startup illustration" style="max-width: 320px; opacity: 0.95;">
+                </div>
+            </div>
+        </section>
+
+        <section class="grid-2 mt-4">
+            <div class="card">
+                 <h3>How it works</h3>
+                 <p>Choose a persona to load helpful defaults, then click Start to open the simulator pre-filled for that business model.</p>
+            </div>
+            <div class="card">
+                 <h3>Why try it</h3>
+                 <p>Quickly explore pricing, margins, and growth scenarios to find robust strategies before deep-diving into projections.</p>
+            </div>
+        </section>
+
+        <script src="/static/home.js"></script>
+        
+    </main>
+    <footer>
+        <p>&copy; 2025 Startup Simulator. Built with Python, Flask, and ❤️</p>
+    </footer>
+</body>
+</html>

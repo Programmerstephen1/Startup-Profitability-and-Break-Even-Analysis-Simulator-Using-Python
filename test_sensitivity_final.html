@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profitability Simulator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Startup Profitability Simulator</h1>
+            <p>Analyze financial projections, break-even points, and business scenarios</p>
+            <nav>
+                        <a href="/">Home</a>
+                        <a href="/simulator">Simulator</a>
+                        <a href="/sensitivity">Sensitivity Analysis</a>
+                        <a href="/cohort">Cohort Projection</a>
+                        <a href="/compare">Compare Scenarios</a>
+                        <a href="/scenarios">Manage Scenarios</a>
+                    </nav>
+        </div>
+    </header>
+    <main class="container">
+        
+    <a href="/simulator" class="back-link">← Back to Dashboard</a>
+    <form action="/sensitivity_simulate" method="post">
+        <h2>🔍 Sensitivity Analysis</h2>
+        <p class="text-muted">Analyze how changes in key parameters affect break-even month and final profit.</p>
+        
+        <h3>Business Parameters</h3>
+        <div class="form-group">
+            <label>Fixed Costs</label>
+            <input type="number" name="fixed_costs" value="10000" step="100">
+        </div>
+        <div class="form-group">
+            <label>Price per Unit</label>
+            <input type="number" name="price" value="50" step="0.01">
+        </div>
+        <div class="form-group">
+            <label>Variable Cost per Unit</label>
+            <input type="number" name="variable_cost" value="20" step="0.01">
+        </div>
+        <div class="form-group">
+            <label>Initial Sales (units)</label>
+            <input type="number" name="initial_sales" value="200" step="1">
+        </div>
+        <div class="form-group">
+            <label>Monthly Growth Rate</label>
+            <input type="number" name="monthly_growth" value="0.05" step="0.01">
+        </div>
+        <div class="form-group">
+            <label>Months</label>
+            <input type="number" name="months" value="12" step="1" min="1">
+        </div>
+
+        <h3>Sensitivity Settings</h3>
+        <div class="form-group">
+            <label>Parameter to Vary</label>
+            <select name="parameter">
+                <option value="price">Price per Unit</option>
+                <option value="variable_cost">Variable Cost per Unit</option>
+                <option value="initial_sales">Initial Sales</option>
+                <option value="monthly_growth">Monthly Growth Rate</option>
+                <option value="fixed_costs">Fixed Costs</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Variation Range (e.g., 0.2 for ±20%)</label>
+            <input type="number" name="variation" value="0.2" step="0.05" min="0" max="1">
+        </div>
+        <button type="submit">Run Sensitivity Analysis</button>
+    </form>
+    
+    </main>
+    <footer>
+        <p>&copy; 2025 Startup Simulator. Built with Python, Flask, and ❤️</p>
+    </footer>
+</body>
+</html>

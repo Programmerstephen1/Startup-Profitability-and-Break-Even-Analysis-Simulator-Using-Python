@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" width="480" height="240" role="img" aria-label="Graph explanation">
+  <rect width="100%" height="100%" fill="#fff" rx="6"/>
+  <g transform="translate(40,20)">
+    <rect x="0" y="0" width="400" height="180" fill="#f8fafc" rx="6"/>
+    <!-- grid -->
+    <g stroke="#e6eefc" stroke-width="1">
+      <line x1="0" y1="30" x2="400" y2="30" />
+      <line x1="0" y1="60" x2="400" y2="60" />
+      <line x1="0" y1="90" x2="400" y2="90" />
+      <line x1="0" y1="120" x2="400" y2="120" />
+      <line x1="0" y1="150" x2="400" y2="150" />
+    </g>
+    <!-- revenue (blue) -->
+    <path d="M0 150 C60 130, 120 110, 180 90 C240 70,300 50,360 40 C380 36,400 34,400 34" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+    <!-- variable costs (green) -->
+    <path d="M0 150 C60 140, 120 130, 180 120 C240 110,300 100,360 90 C380 88,400 86,400 86" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+    <!-- fixed costs (red, horizontal) -->
+    <line x1="0" y1="80" x2="400" y2="80" stroke="#ef4444" stroke-width="2" stroke-dasharray="6 4" />
+    <!-- cumulative profit (dark) -->
+    <path d="M0 170 C80 160,160 140,240 120 C320 90,360 60,400 30" fill="none" stroke="#374151" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profitability Simulator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Startup Profitability Simulator</h1>
+            <p>Analyze financial projections, break-even points, and business scenarios</p>
+            <nav>
+                        <a href="/">Home</a>
+                        <a href="/simulator">Simulator</a>
+                        <a href="/sensitivity">Sensitivity Analysis</a>
+                        <a href="/cohort">Cohort Projection</a>
+                        <a href="/compare">Compare Scenarios</a>
+                        <a href="/scenarios">Manage Scenarios</a>
+                    </nav>
+        </div>
+    </header>
+    <main class="container">
+        
+    <a href="/simulator" class="back-link">← Back to Dashboard</a>
+    
+    <h2>💾 Manage Scenarios</h2>
+    <p>Save your business models and compare them later.</p>
+
+    <div class="grid-2">
+        <div>
+            <div class="card">
+                <h3>Saved Scenarios</h3>
+                <table><thead><tr><th>Scenario Name</th><th>Action</th></tr></thead><tbody><tr><td><strong>test_scenario</strong></td><td><a href='/scenarios/delete/test_scenario' class='btn-sm' onclick="return confirm('Delete scenario \'test_scenario\'?')">Delete</a></td></tr></tbody></table>
+            </div>
+        </div>
+
+        <div>
+            <form action="/scenarios/save" method="post">
+                <h3>Save New Scenario</h3>
+                <div class="form-group">
+                    <label>Scenario Name</label>
+                    <input type="text" name="scenario_name" placeholder="e.g., Conservative Plan" required>
+                </div>
+                <h4>Parameters</h4>
+                <div class="form-group">
+                    <label>Fixed Costs</label>
+                    <input type="number" name="fixed_costs" value="10000" step="100">
+                </div>
+                <div class="form-group">
+                    <label>Price per Unit</label>
+                    <input type="number" name="price" value="50" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Variable Cost per Unit</label>
+                    <input type="number" name="variable_cost" value="20" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Initial Sales</label>
+                    <input type="number" name="initial_sales" value="200" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Monthly Growth</label>
+                    <input type="number" name="monthly_growth" value="0.05" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Months</label>
+                    <input type="number" name="months" value="12" step="1">
+                </div>
+                <button type="submit">Save Scenario</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card" style="margin-block-start: 20px;"><h3>Load Saved Scenario</h3><form action="/scenarios/load" method="post"><div class="form-group"><select name="scenario_name" required><option value="test_scenario">test_scenario</option></select></div><button type="submit">Load & Simulate</button></form></div>
+    
+    </main>
+    <footer>
+        <p>&copy; 2025 Startup Simulator. Built with Python, Flask, and ❤️</p>
+    </footer>
+</body>
+</html>
