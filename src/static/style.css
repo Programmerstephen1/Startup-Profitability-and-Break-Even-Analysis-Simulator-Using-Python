@@ -48,7 +48,7 @@ header {
     box-shadow: var(--box-shadow);
     border-bottom: 2px solid var(--primary-color);
     padding: 20px 0;
-    margin-bottom: 40px;
+    margin-block-end: 40px;
 }
 
 header h1 {
